@@ -21,7 +21,7 @@ app.controller('HowManyCtrl', function($scope, $routeParams, $http) {
     }
 
     function loadTeamsForEventAndAddToScope(event) {
-        loadTeamsForEvent(event, (x) => scope.events.push({ "event": event, "count": x.length }));
+        loadTeamsForEvent(event, (x) => $scope.events.push({ "event": event, "count": x.length }));
     }
 
     loadCurrentEvents(function(events) {
