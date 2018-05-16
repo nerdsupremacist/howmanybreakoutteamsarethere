@@ -1,6 +1,6 @@
 
-<div ng-repeat="event in events">
-    <h1>{{event.title}}:</h1>
-    <h2>{{event.count}}</h2>
+<div ng-repeat="(title, count) in events">
+    <h1>{{title}}:</h1>
+    <h2>{{count}}</h2>
 </div>
 <p>❤️ - Quincy</p>

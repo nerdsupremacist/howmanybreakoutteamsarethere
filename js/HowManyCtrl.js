@@ -1,6 +1,6 @@
 app.controller('HowManyCtrl', function($scope, $routeParams, $http) {
 
-    $scope.events = [];
+    $scope.events = {};
 
     function loadCurrentEvents(callback) {
         $http.get("https://backend.break-out.org/event/").then(function(res) {
@@ -22,14 +22,27 @@ app.controller('HowManyCtrl', function($scope, $routeParams, $http) {
 
     function loadTeamsForEventAndAddToScope(event) {
         var title = event.title
-        loadTeamsForEvent(event, (x) => $scope.events.push({ "title": title, "count": x.length }));
+        var previous = $scope[title]
+        loadTeamsForEvent(event, (x) => {
+            $scope.events[title] = x.length
+            if (x.length > previous) {
+                // Push notification
+            }
+        });
     }
 
     loadCurrentEvents(function(events) {
         if (events !== null) {
-            for (var i = 0; i < events.length; i++) {
-                loadTeamsForEventAndAddToScope(events[i]);
+            function doit() {
+                for (var i = 0; i < events.length; i++) {
+                    loadTeamsForEventAndAddToScope(events[i]);
+                }
+                setTimeout(function () {
+                    doit();
+                }, 1000);
             }
+
+            doit();
         }
     })
 
