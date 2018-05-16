@@ -18,6 +18,7 @@ app.controller('HowManyCtrl', function($scope, $routeParams, $http) {
         }
     }
 
+    $scope.openForRegistration = true;
     $scope.events = {};
 
     function loadCurrentEvents(callback) {
@@ -39,32 +40,37 @@ app.controller('HowManyCtrl', function($scope, $routeParams, $http) {
     }
 
     function loadTeamsForEventAndAddToScope(event) {
-        var title = event.title
-        var previous = $scope[title]
+        var title = event.title;
+        var city = event.city;
+        var previous = $scope[title];
         loadTeamsForEvent(event, (x) => {
             $scope.events[title] = x.length
             if (previous && x.length > previous && canBeNotified) {
                 var newTeams = x.length - previous;
-                var notification = new Notification(newTeams + " new Team(s) in " + title);
+                var notification = new Notification(newTeams + " new Team(s) in " + city);
             }
         });
     }
 
     requestPermission();
 
-    loadCurrentEvents(function(events) {
-        if (events !== null) {
-            function doit() {
-                for (var i = 0; i < events.length; i++) {
-                    loadTeamsForEventAndAddToScope(events[i]);
-                }
-                setTimeout(function() {
-                    doit();
-                }, 10000);
+    function doit() {
+        loadCurrentEvents(function(events) {
+            if (events === null) return;
+
+            for (var i = 0; i < events.length; i++) {
+                loadTeamsForEventAndAddToScope(events[i]);
             }
 
-            doit();
-        }
-    });
+            $scope.openForRegistration = events.reduce((a, x) => a || x.openForRegistration, false);
+            if (!$scope.openForRegistration) return;
+
+            setTimeout(function() {
+                doit();
+            }, 10000);
+        });
+    }
+
+    doit();
 
 });
