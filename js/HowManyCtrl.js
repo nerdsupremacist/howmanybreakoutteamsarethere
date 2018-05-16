@@ -41,7 +41,7 @@ app.controller('HowManyCtrl', function($scope, $routeParams, $http) {
     }
 
     function updateTotal() {
-        $scope.total = Object.keys(events).reduce((a, x) => a + events[x], 0);
+        $scope.total = Object.keys($scope.events).reduce((a, x) => a + $scope.events[x], 0);
     }
 
     function loadTeamsForEventAndAddToScope(event) {
