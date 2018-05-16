@@ -60,7 +60,7 @@ app.controller('HowManyCtrl', function($scope, $routeParams, $http) {
                 }
                 setTimeout(function() {
                     doit();
-                }, 1000);
+                }, 10000);
             }
 
             doit();
