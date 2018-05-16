@@ -40,15 +40,19 @@ app.controller('HowManyCtrl', function($scope, $routeParams, $http) {
         });
     }
 
+    function updateTotal() {
+        $scope.total = Object.keys(events).reduce((a, x) => a + events[x], 0);
+    }
+
     function loadTeamsForEventAndAddToScope(event) {
         var title = event.title;
         var city = event.city;
         var previous = $scope[title];
         loadTeamsForEvent(event, (x) => {
             $scope.events[title] = x.length;
+            updateTotal();
             if (previous && x.length > previous && canBeNotified) {
                 var newTeams = x.length - previous;
-                $scope.total = $scope.total + newTeams;
                 var notification = new Notification(newTeams + " new Team(s) in " + city);
             }
         });
