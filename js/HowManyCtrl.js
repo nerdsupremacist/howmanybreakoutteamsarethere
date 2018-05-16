@@ -47,7 +47,7 @@ app.controller('HowManyCtrl', function($scope, $routeParams, $http) {
         loadTeamsForEvent(event, (x) => {
             $scope.events[title] = x.length
             $scope.total = $scope.total + x.length - previous;
-            if (x.length > previous && canBeNotified) {
+            if (previous != 0 && x.length > previous && canBeNotified) {
                 var newTeams = x.length - previous;
                 var notification = new Notification(newTeams + " new Team(s) in " + city);
             }
