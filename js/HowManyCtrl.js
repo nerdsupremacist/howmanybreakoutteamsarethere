@@ -20,6 +20,7 @@ app.controller('HowManyCtrl', function($scope, $routeParams, $http) {
 
     $scope.openForRegistration = true;
     $scope.events = {};
+    $scope.total = 0;
 
     function loadCurrentEvents(callback) {
         $http.get("https://backend.break-out.org/event/").then(function(res) {
@@ -42,10 +43,11 @@ app.controller('HowManyCtrl', function($scope, $routeParams, $http) {
     function loadTeamsForEventAndAddToScope(event) {
         var title = event.title;
         var city = event.city;
-        var previous = $scope[title];
+        var previous = $scope[title] || 0;
         loadTeamsForEvent(event, (x) => {
             $scope.events[title] = x.length
-            if (previous && x.length > previous && canBeNotified) {
+            $scope.total = $scope.total + x.length - previous;
+            if (x.length > previous && canBeNotified) {
                 var newTeams = x.length - previous;
                 var notification = new Notification(newTeams + " new Team(s) in " + city);
             }
