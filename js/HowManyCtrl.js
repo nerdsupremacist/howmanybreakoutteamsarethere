@@ -45,10 +45,10 @@ app.controller('HowManyCtrl', function($scope, $routeParams, $http) {
         var city = event.city;
         var previous = $scope[title];
         loadTeamsForEvent(event, (x) => {
-            $scope.events[title] = x.length
-            $scope.total = $scope.total + x.length - (previous || 0);
+            $scope.events[title] = x.length;
             if (previous && x.length > previous && canBeNotified) {
                 var newTeams = x.length - previous;
+                $scope.total = $scope.total + newTeams;
                 var notification = new Notification(newTeams + " new Team(s) in " + city);
             }
         });
